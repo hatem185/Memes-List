@@ -1,4 +1,4 @@
-package com.example.memes.ui
+package com.example.memes.ui.memeslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import coil.load
 import com.example.memes.databinding.MemeItemBinding
 import com.example.memes.model.Meme
 
-class AdapterMemes() : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class AdapterMemes : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Meme>() {
 
@@ -41,7 +41,7 @@ class AdapterMemes() : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK)
         fun bind(item: Meme) {
             itemBinding.apply {
                 item.apply {
-                    tvMemeImage.load(preview?.get(0))
+                    tvMemeImage.load(preview?.get(if (preview.size > 2) 2 else 0))
                     tvMemeSubredit.text = subreddit
                     tvMemeTitle.text = title
                 }

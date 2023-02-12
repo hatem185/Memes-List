@@ -1,18 +1,15 @@
-package com.example.memes.ui
+package com.example.memes.ui.memeslist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 
 import com.example.memes.R
 import com.example.memes.databinding.FragmentMemesListBinding
 import com.example.memes.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.ViewWithFragmentComponent
 
 @AndroidEntryPoint
 class MemesListFragment : Fragment(R.layout.fragment_memes_list) {
@@ -28,24 +25,23 @@ class MemesListFragment : Fragment(R.layout.fragment_memes_list) {
 
         binding.apply {
             memesListView.adapter = adapter
+            cancelBtn.setOnClickListener { hideRadioGroupLayout() }
             retryBtn.setOnClickListener {
                 errorLayout.visibility = View.GONE
                 viewModel.loadMemesList()
             }
-            rgShowBtn.setOnClickListener {
-                if (rgMemes.isVisible) {
-                    rgShowBtn.visibility = View.GONE
-                } else {
-                    rgMemes.visibility = View.VISIBLE
-                    rgShowBtn.visibility = View.GONE
-                }
+            showBtnRadioGroub.setOnClickListener {
+                layoutRadioBtn.visibility = View.VISIBLE
+                cancelBtn.visibility = View.VISIBLE
+                showBtnRadioGroub.visibility = View.GONE
+
             }
             oneMemeRadio.setOnClickListener {
-                hideBtnOnChoice()
+                hideRadioGroupLayout()
                 viewModel.setOneMeme()
             }
             multiMemeRadio.setOnClickListener {
-                hideBtnOnChoice()
+                hideRadioGroupLayout()
                 viewModel.loadMemesList()
             }
             viewModel.memesList.observe(viewLifecycleOwner) { resource ->
@@ -67,10 +63,11 @@ class MemesListFragment : Fragment(R.layout.fragment_memes_list) {
         }
     }
 
-    private fun hideBtnOnChoice() {
+    private fun hideRadioGroupLayout() {
         binding.apply {
-            rgMemes.visibility = View.GONE
-            rgShowBtn.visibility = View.VISIBLE
+            layoutRadioBtn.visibility = View.GONE
+            cancelBtn.visibility = View.GONE
+            showBtnRadioGroub.visibility = View.VISIBLE
         }
     }
 

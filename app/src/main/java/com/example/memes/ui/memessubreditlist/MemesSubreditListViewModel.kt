@@ -1,4 +1,4 @@
-package com.example.memes.ui
+package com.example.memes.ui.memessubreditlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,26 +12,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MemesListViewModel @Inject constructor(private val memeApi: MemeApi) : ViewModel() {
-    private var _memesList: MutableLiveData<Resource<List<Meme>>> =
+class MemesSubreditListViewModel @Inject constructor(private val memesApi: MemeApi) : ViewModel() {
+    private val _memesSubreditList: MutableLiveData<Resource<List<Meme>>> =
         MutableLiveData(Resource.Loading())
-    val memesList: LiveData<Resource<List<Meme>>> get() = _memesList
+    val memesSubreditList: LiveData<Resource<List<Meme>>> get() = _memesSubreditList
 
     init {
-        loadMemesList()
+
     }
 
-    fun loadMemesList() {
+    fun loadSubreditMemesList(subredit: String) {
         viewModelScope.launch {
-            _memesList.value = memeApi.getMemesList((5..50).random())
+            _memesSubreditList.value = memesApi.getMemeListBySubredit(subredit, (5..50).random())
         }
     }
-
-    fun setOneMeme() {
-        viewModelScope.launch {
-            _memesList.value = memeApi.getMemesList(1)
-        }
-    }
-
-
 }
