@@ -7,12 +7,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import com.example.memes.R
 import com.example.memes.databinding.FragmentMemesSubreditListBinding
 import com.example.memes.ui.memeslist.AdapterMemes
 import com.example.memes.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MemesSubreditList : Fragment(R.layout.fragment_memes_subredit_list) {
@@ -20,11 +22,13 @@ class MemesSubreditList : Fragment(R.layout.fragment_memes_subredit_list) {
     private val binding get() = _binding!!
     private val viewModel by viewModels<MemesSubreditListViewModel>()
 
+    @Inject
+    lateinit var adapter: AdapterMemes
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMemesSubreditListBinding.bind(view)
-        val adapter = AdapterMemes()
         val options = arrayOf("dankmemes", "me_irl", "memes", "wholesomememes")
         val spinnerAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, options)

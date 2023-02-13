@@ -10,6 +10,7 @@ import com.example.memes.R
 import com.example.memes.databinding.FragmentMemesListBinding
 import com.example.memes.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MemesListFragment : Fragment(R.layout.fragment_memes_list) {
@@ -17,12 +18,13 @@ class MemesListFragment : Fragment(R.layout.fragment_memes_list) {
     private val binding get() = _binding!!
     private val viewModel by viewModels<MemesListViewModel>()
 
+    @Inject
+    lateinit var adapter: AdapterMemes
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMemesListBinding.bind(view)
-        val adapter = AdapterMemes()
-
         binding.apply {
             memesListView.adapter = adapter
             cancelBtn.setOnClickListener { hideRadioGroupLayout() }

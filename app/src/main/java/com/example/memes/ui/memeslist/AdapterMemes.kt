@@ -1,15 +1,26 @@
 package com.example.memes.ui.memeslist
 
+import android.os.Build.VERSION.SDK_INT
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.load
+import coil.request.ImageRequest
 import com.example.memes.databinding.MemeItemBinding
 import com.example.memes.model.Meme
+import com.example.memes.model.MemeApi
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class AdapterMemes : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class AdapterMemes @Inject constructor(
+    private val imageLoader: ImageLoader,
+    private val imageRequestBuilder: ImageRequest.Builder
+) : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Meme>() {
 
@@ -41,7 +52,7 @@ class AdapterMemes : ListAdapter<Meme, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
         fun bind(item: Meme) {
             itemBinding.apply {
                 item.apply {
-                    tvMemeImage.load(preview?.get(if (preview.size > 2) 2 else 0))
+                    imageLoader.enqueue(imageRequestBuilder.data(url).target(tvMemeImage).build())
                     tvMemeSubredit.text = subreddit
                     tvMemeTitle.text = title
                 }
