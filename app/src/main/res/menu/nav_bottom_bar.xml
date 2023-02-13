@@ -6,10 +6,12 @@
         android:id="@+id/memes_list_graph"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:icon="@drawable/noun_feels_guy"
         android:title="Random Memes" />
     <item
         android:id="@+id/memes_subredit_list_graph"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:icon="@drawable/reddit_logo"
         android:title="Subredit Memes" />
 </menu>
